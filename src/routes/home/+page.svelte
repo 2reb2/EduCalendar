@@ -58,22 +58,76 @@
     import { eventsStore } from '$lib/stores/events.js';
     let unsubscribeEvents;
 
+    // async function loadEvents() {
+    //     if (!auth.currentUser) return;
+        
+    //     const q = query(
+    //         collection(db, 'events'),
+    //         where('userId', '==', auth.currentUser.uid),
+    //         orderBy('startDate')
+    //     );
+
+    //     unsubscribeEvents = onSnapshot(q, (snapshot) => {
+    //     const events = snapshot.docs.map(doc => ({
+    //         id: doc.id,
+    //         ...doc.data()
+    //     }));
+    //     eventsStore.set(events);
+    //     });
+    // }
+
+    import coursesStore from '$lib/stores/courses'; // ensure this is imported
+
     async function loadEvents() {
         if (!auth.currentUser) return;
-        
-        const q = query(
-        collection(db, 'events'),
-        where('userId', '==', auth.currentUser.uid),
-        orderBy('startDate')
+
+        const eventsQuery = query(
+            collection(db, 'events'),
+            where('userId', '==', auth.currentUser.uid),
+            orderBy('startDate')
         );
 
-        unsubscribeEvents = onSnapshot(q, (snapshot) => {
-        const events = snapshot.docs.map(doc => ({
-            id: doc.id,
-            ...doc.data()
-        }));
-        eventsStore.set(events);
-        });
+        const [coursesSnapshot, eventsSnapshot] = await Promise.all([
+            getDocs(query(collection(db, 'courses'), where('userId', '==', auth.currentUser.uid))),
+            getDocs(eventsQuery)
+        ]);
+
+        const coursesData = coursesSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        const regularEvents = eventsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+
+        const classEvents = coursesData.flatMap(course => {
+            if (!course.schedule) return [];
+
+            return course.schedule.flatMap(session => {
+            if (!session.day || !session.start || !session.end) return [];
+
+            const dayMap = {
+                'sunday': 0, 'monday': 1, 'tuesday': 2,
+                'wednesday': 3, 'thursday': 4, 'friday': 5, 'saturday': 6
+            };
+
+            const dayNumber = dayMap[session.day.toLowerCase()];
+            if (dayNumber === undefined) return [];
+
+            return {
+                id: `class-${course.id}-${session.day}`,
+                title: `${course.title} Class`,
+                startTime: session.start,
+                endTime: session.end,
+                location: session.location || '',
+                color: course.color,
+                isRecurring: true,
+                recurrencePattern: session.day.toLowerCase(),
+                startDate: course.createdAt || new Date().toISOString().split('T')[0],
+                courseTitle: course.title,
+                isClass: true,
+                courseId: course.id
+            };
+            });
+    });
+
+    const combinedEvents = [...regularEvents, ...classEvents];
+    eventsStore.set(combinedEvents);
     }
 
     onMount(() => {
@@ -187,7 +241,7 @@
         {/if}
     </div>
     <div class="fixed bottom-4 right-4 z-[9990]">
-        <AddEventModal onCourseAdded={loadCourses} isDisabled={$activeModal === 'eventDetail'}/>
+        <AddEventModal onCourseAdded={loadCourses} onEventAdded={loadEvents} isDisabled={$activeModal === 'eventDetail'}/>
 	</div>
     <style>
     :global(.fc .fc-now-indicator) {

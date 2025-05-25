@@ -139,6 +139,8 @@
     }
   }
 
+  export let onEventAdded;
+
   async function addEvent() {
     if (!selectedCourse || !previewTitle || !selectedType) {
       alert('Please select a course, type, and ensure the event has a title');
@@ -178,6 +180,9 @@
     try {
       await addDoc(collection(db, 'events'), newEvent);
       // console.log('Event saved:', newEvent);
+      if (onEventAdded) {
+        onEventAdded(); 
+      }
       closeModal();
     } catch (e) {
       // console.error('Failed to save event:', e);
