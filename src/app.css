@@ -1,0 +1,90 @@
+@import 'tailwindcss';
+@plugin '@tailwindcss/forms';
+@plugin '@tailwindcss/typography';
+
+@plugin 'flowbite/plugin';
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --color-primary-50: #fff5f2;
+  --color-primary-100: #fff1ee;
+  --color-primary-200: #ffe4de;
+  --color-primary-300: #ffd5cc;
+  --color-primary-400: #ffbcad;
+  --color-primary-500: #fe795d;
+  --color-primary-600: #2f2589; /*use this i think*/
+  --color-primary-700: #eb4f27;
+  --color-primary-800: #2f2589; /* add event button*/
+  --color-primary-900: #a5371b;
+}
+
+@source "../node_modules/flowbite-svelte/dist";
+
+/* * {
+  margin: 0;
+} */
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.ec-day-grid, 
+.ec-time-grid, 
+.ec-list {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Hide scrollbar in modern browsers */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hide {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.01); /* semi-transparent track */
+  border-radius: 9999px; /* pill shape */
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: rgba(31, 41, 55, 0.262); /* semi-transparent dark thumb */
+  border-radius: 9999px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-button {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+.custom-scrollbar::-webkit-scrollbar-button:single-button {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+.custom-scrollbar {
+  scrollbar-width: thin;              /* Firefox */
+  scrollbar-color: rgba(31,41,55,0.2) transparent; /* Firefox thumb & track */
+}
+
+[data-modal-backdrop] {
+  z-index: 1000;
+}
+
+[data-modal] {
+  z-index: 1001;
+}
+
