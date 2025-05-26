@@ -134,7 +134,7 @@
                 <p>
                     EduCalendar is a smart planner for students that simplifies scheduling using Natural Language Processing (NLP). Its Named Entity Recognition (NER) feature lets users input phrases like 
                     <span class="italic">"Math test on 1/5/2025 at 10am to 12pm at Lab 1"</span>
-                    , and it automatically extracts key details—such as title, date, time, and location—into calendar events.
+                    , and it automatically extracts key details—such as title, date, time, location, and frequency—into calendar events.
                 </p>
                 
                 <p>

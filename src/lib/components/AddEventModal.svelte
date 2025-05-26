@@ -337,7 +337,7 @@
           <div class="text-sm text-gray-600 dark:text-gray-400 mb-2">
             <p>⚠️ We use NLP NER to extract event details. For best results:</p>
             <ul class="list-disc pl-5 mt-1 space-y-1">
-              <li>Use prepositions between each event details (e.g. "Math test <em>on</em> May 1 <em>at</em> 2pm")</li>
+              <li>Use prepositions between each event details (e.g. "Math test <em>on</em> May 1 <em>at</em> 2pm every Monday")</li>
               <li>Check the preview and edit if needed</li>
             </ul>
           </div>
@@ -451,7 +451,7 @@
               </div>
               {/if}              
               <div class="flex items-center gap-3">
-                <label for="eventLocation" class="w-32 font-semibold">Location</label>
+                <label for="eventLocation" class="w-30 font-semibold">Location</label>
                 <input
                   id="eventLocation"
                   type="text"
