@@ -4,7 +4,7 @@
     import courses from '$lib/stores/courses';
     import { fade } from 'svelte/transition';
     import { Button } from 'flowbite-svelte';
-    import CourseDetailModal from './CourseDetailModal.svelte'; // Import the course modal
+    import CourseDetailModal from './CourseDetailModal.svelte'; 
 
     import { activeModal } from '$lib/stores/modal';
     import { get } from 'svelte/store';
@@ -25,7 +25,7 @@
     function handleClose() {
         isEditing = false;
         activeModal.set(null);
-        onClose(); // Call parent-provided close handler
+        onClose(); 
     }
     
     let modalRef;
@@ -371,12 +371,10 @@
         onUpdate={() => {
             closeCourseModal();
             onUpdate();
-            // You might want to refresh events here if needed
         }}
         onDelete={() => {
             closeCourseModal();
             onDelete();
-            // You might want to refresh events here if needed
         }}
     />
 {/if}

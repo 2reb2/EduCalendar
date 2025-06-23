@@ -137,48 +137,6 @@
     }
     //course detail modal end
 
-    // async function fetchEventsForCourse(courseId) {
-    //   const eventsQuery = query(
-    //     collection(db, 'events'),
-    //     where('courseId', '==', courseId)
-    //   );
-    //   const eventsSnapshot = await getDocs(eventsQuery);
-    //   return eventsSnapshot.docs.map(eventDoc => ({
-    //     id: eventDoc.id,
-    //     ...eventDoc.data()
-    //   }));
-    // }
-
-    // async function fetchCourses() {
-    //   if (!auth.currentUser) return;
-
-    //   const q = query(collection(db, 'courses'), where('userId', '==', auth.currentUser.uid));
-    //   const querySnapshot = await getDocs(q);
-
-    //   const coursesData = await Promise.all(querySnapshot.docs.map(async (doc) => {
-    //     const course = { id: doc.id, ...doc.data()};
-        
-    //     // Fetch events for this course
-    //     const events = await fetchEventsForCourse(doc.id);
-    //     return {
-    //       ...course,
-    //       events: events
-    //     };
-    //   }));
-
-    //   // Update the store which will automatically update our 'courses' variable
-    //   coursesStore.set(coursesData);
-
-    //   openDetails = Object.fromEntries(courses.map(c => [c.id, true]));
-    //   openTasks = Object.fromEntries(courses.map(c => [c.id, true]));
-    // }
-
-    // // Called when this tab is shown or reloaded
-    // onMount(() => {
-    //   coursesStore.load();
-    //   return () => unsubscribe();
-    // });
-
     function formatEventDatetime(startDate, startTime, endDate, endTime, allDay = false, isRecurring = false, recurrencePattern) {
     const optsDate = { day: 'numeric', month: 'short' };
 
@@ -244,17 +202,6 @@
         return 'Invalid Date';
     }
   }
-
-    // @ts-ignore
-    // function toggle(section, id) {
-    //     if (section === 'details') {
-    //         // @ts-ignore
-    //         openDetails[id] = !openDetails[id];
-    //     } else if (section === 'tasks') {
-    //         // @ts-ignore
-    //         openTasks[id] = !openTasks[id];
-    //     }
-    // }
 </script>
  
 <!-- Scrollable course cards -->

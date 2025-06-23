@@ -10,17 +10,6 @@
     let { userCourses = [], coursesTabRef, children } = $props();
     let loadedCourses = []; // local state for mutation
 
-	// async function loadCourses() {
-	// 	if (!auth.currentUser) return;
-	// 	const q = query(collection(db, 'courses'), where('userId', '==', auth.currentUser.uid));
-	// 	const querySnapshot = await getDocs(q);
-
-	// 	loadedCourses = [];
-	// 	querySnapshot.forEach(doc => {
-	// 		loadedCourses.push({ id: doc.id, ...doc.data() });
-	// 	});
-	// }
-
     // Add user state
     let currentUser = $state(null);
     let userData = $state(null);
@@ -58,25 +47,7 @@
     import { eventsStore } from '$lib/stores/events.js';
     let unsubscribeEvents;
 
-    // async function loadEvents() {
-    //     if (!auth.currentUser) return;
-        
-    //     const q = query(
-    //         collection(db, 'events'),
-    //         where('userId', '==', auth.currentUser.uid),
-    //         orderBy('startDate')
-    //     );
-
-    //     unsubscribeEvents = onSnapshot(q, (snapshot) => {
-    //     const events = snapshot.docs.map(doc => ({
-    //         id: doc.id,
-    //         ...doc.data()
-    //     }));
-    //     eventsStore.set(events);
-    //     });
-    // }
-
-    import coursesStore from '$lib/stores/courses'; // ensure this is imported
+    import coursesStore from '$lib/stores/courses'; 
 
     async function loadEvents() {
         if (!auth.currentUser) return;
@@ -139,9 +110,8 @@
                 console.log('[Layout] User logged in, loading data');
                 userData = await fetchUserData(user.uid);
                 console.log('[Layout] User data loaded:', userData);
-                await courses.load(); // Wait for courses to load
+                await courses.load(); 
                 console.log('[Layout] Courses loaded, now loading events');
-                // loadEvents(); // Then load regular events
             } else {
                 console.log('[Layout] No user, clearing stores');
                 userData = null;
@@ -156,10 +126,6 @@
             if (unsubscribeEvents) unsubscribeEvents();
         };
     });
-    // onMount(() => {
-    //     loadCourses();
-    //     loadEvents(); // Load events when layout mounts
-    // });
 
     onDestroy(() => {
         if (unsubscribeEvents) unsubscribeEvents();
@@ -216,18 +182,7 @@
     <!-- Tabs Content -->
     <div class="flex-1 overflow-hidden p-1 pl-4 pr-4 pb-4 text-sm text-gray-500 dark:text-gray-400"> <!-- Changed this line -->
         {#if activeTab === 'homepage'}
-            <div class="h-full flex"> <!-- Changed this line -->
-                <!-- <div class="homepage-overview w-[30%] flex flex-col space-y-4 pr-4 ">
-                    <div class="homepage-ring h-[30%] pt-3">
-						<DonutChart></DonutChart>
-                    </div>
-                    <div class="hompage-list flex-1 overflow-hidden"> 
-						<OverviewList></OverviewList>
-                    </div>
-                </div>
-                <div class="homepage-calendar w-[70%] p-2 flex flex-col"> 
-                    <Calendar bind:this={calendarRef} plugins={[TimeGrid, Interaction]} {options} class="flex-1"/>
-                </div> -->
+            <div class="h-full flex"> 
                 <ProfileTab></ProfileTab>
             </div>
         {:else if activeTab === 'calendar'}
@@ -255,6 +210,4 @@
     }
     </style>
 </div>
-
-<!-- {@render children()} -->
   

@@ -117,7 +117,7 @@
         rangeEnd.setHours(23, 59, 59, 999);
       } else if (timeRange === 'week') {
         // Modified week calculation to match calendar's firstDay:1 (Monday)
-        const day = now.getDay(); // 0=Sunday, 1=Monday,...
+        const day = now.getDay(); // 0=Sunday, 1=Monday etc
         
         // If Sunday (0), show previous Monday to Sunday
         if (day === 0) {
@@ -207,8 +207,6 @@
     if (unsubscribeFirestore) unsubscribeFirestore();
   });
 
-  // React to sort/filter changes - more precise reactivity
-  // $: sortBy, filterRange, filterType, setupListener();
   $: if (auth.currentUser) {
     setupListener();
   }
@@ -216,71 +214,61 @@
   function formatEventDatetime(startDate, startTime, endDate, endTime, allDay = false, isRecurring = false, recurrencePattern) {
     const optsDate = { day: 'numeric', month: 'short' };
 
-    // Handle invalid dates first
-    if ((!startDate) && (isRecurring)) return 'Every ' + recurrencePattern;
+    // Handle missing start date
+    if ((!startDate) && isRecurring) return 'Every ' + recurrencePattern;
     if (!startDate) return 'Invalid Date';
 
     try {
-        const start = new Date(startDate);
-        if (isNaN(start.getTime())) return 'Invalid Date';
+      function formatDateString(dateStr) {
+        const [year, month, day] = dateStr.split('-');
+        const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        return `${parseInt(day)} ${monthNames[parseInt(month) - 1]}`;
+      }
 
-        let formattedString = '';
+      let formattedString = '';
 
-        if (isRecurring) {
-            formattedString += '🔁 '; // Recurring icon
-        }
+      if (isRecurring) {
+        formattedString += '🔁 ';
+      }
 
-        if (allDay || !startTime || !endTime) {
-            const formattedStartDate = start.toLocaleDateString('en-MY', optsDate);
+      const formattedStartDate = formatDateString(startDate);
+      const formattedEndDate = endDate && endDate !== startDate ? formatDateString(endDate) : formattedStartDate;
 
-            if (endDate && endDate !== startDate) {
-                const end = new Date(endDate);
-                const formattedEndDate = end.toLocaleDateString('en-MY', optsDate);
-                formattedString += `${formattedStartDate} to ${formattedEndDate} • All Day`;
-            } else {
-                formattedString += `${formattedStartDate} • All Day`;
-            }
+      if (allDay || !startTime || !endTime) {
+        if (endDate && endDate !== startDate) {
+          formattedString += `${formattedStartDate} to ${formattedEndDate} • All Day`;
         } else {
-            const startTimeStr = startTime.includes(':') ? startTime : `${startTime}:00`;
-            const endTimeStr = endTime.includes(':') ? endTime : `${endTime}:00`;
-            
-            const startTimeObj = new Date(`${startDate}T${startTimeStr}`);
-            const endTimeObj = new Date(`${endDate || startDate}T${endTimeStr}`);
+          formattedString += `${formattedStartDate} • All Day`;
+        }
+      } else {
+        const startTimeStr = startTime.includes(':') ? startTime : `${startTime}:00`;
+        const endTimeStr = endTime.includes(':') ? endTime : `${endTime}:00`;
 
-            if (isNaN(startTimeObj.getTime())) {
-                return `${formattedString}Invalid Time`;
-            }
-
-            const formattedStartDate = start.toLocaleDateString('en-MY', optsDate);
-            const formattedEndDate = endDate ? new Date(endDate).toLocaleDateString('en-MY', optsDate) : formattedStartDate;
-
-            function formatTime(date) {
-                const h = date.getHours();
-                const m = date.getMinutes().toString().padStart(2, '0');
-                const hour12 = h % 12 === 0 ? 12 : h % 12;
-                const ampm = h < 12 ? 'am' : 'pm';
-                return `${hour12}:${m}${ampm}`;
-            }
-
-            const startFormatted = formatTime(startTimeObj);
-            const endFormatted = formatTime(endTimeObj);
-
-            if (startDate === endDate || !endDate) {
-                formattedString += `${formattedStartDate} • ${startFormatted} - ${endFormatted}`;
-            } else {
-                formattedString += `${formattedStartDate} to ${formattedEndDate} • ${startFormatted} - ${endFormatted}`;
-            }
+        // Manual time formatting
+        function formatTimeString(timeStr) {
+          const [h, m] = timeStr.split(':').map(Number);
+          const hour12 = h % 12 === 0 ? 12 : h % 12;
+          const ampm = h < 12 ? 'am' : 'pm';
+          return `${hour12}:${m.toString().padStart(2, '0')}${ampm}`;
         }
 
-        return formattedString;
+        const startFormatted = formatTimeString(startTimeStr);
+        const endFormatted = formatTimeString(endTimeStr);
+
+        if (startDate === endDate || !endDate) {
+          formattedString += `${formattedStartDate} • ${startFormatted} - ${endFormatted}`;
+        } else {
+          formattedString += `${formattedStartDate} to ${formattedEndDate} • ${startFormatted} - ${endFormatted}`;
+        }
+      }
+
+      return formattedString;
     } catch (error) {
-        // console.error('Error formatting date:', error);
-        return 'Invalid Date';
+      // Catch any unexpected issue
+      return 'Invalid Date';
     }
   }
 </script>
-
-<!-- Rest of your HTML remains the same -->
 
 <div class="flex flex-col h-full gap-2">
     <!-- Section 1: Sort & Filter -->
@@ -340,7 +328,6 @@
           </div>
       {:else}
           <div class="flex flex-col space-y-2">
-              <!-- {#each events as event} -->
               {#each filteredEvents as event}
               <div 
                 class="flex border rounded bg-white shadow p-1 pl-3 relative cursor-pointer hover:shadow-md transition-shadow"

@@ -49,7 +49,6 @@
             return course.schedule.flatMap(session => {
                 if (!session.day || !session.start || !session.end) return [];
                 
-                // Convert day string to day number (0=Sunday, 1=Monday, etc.)
                 const dayMap = {
                     'sunday': 0, 'monday': 1, 'tuesday': 2, 
                     'wednesday': 3, 'thursday': 4, 'friday': 5, 'saturday': 6
@@ -139,7 +138,6 @@
 
     let calendarRef;
 
-    // Add these new variables at the top with your other variables
     let showViewDropdown = false;
     let dropdownPosition = { top: 0, left: 0 };
     let currentView = 'timeGridWeek'; // Track current view
@@ -256,7 +254,7 @@
         const today = new Date();
         today.setHours(0, 0, 0, 0);
         
-        // Show events for 1 year (adjust as needed)
+        // Show events for 1 year 
         const endDate = new Date(today);
         endDate.setFullYear(today.getFullYear() + 1);
 
@@ -325,7 +323,6 @@
 
     // Helper function to check if a date matches the recurrence pattern
     function matchesRecurrencePattern(date, pattern) {
-        // Day mapping: Sunday is 0, Monday is 1, and so on...
         const dayMap = {
             'sunday': 0, 'monday': 1, 'tuesday': 2, 
             'wednesday': 3, 'thursday': 4, 'friday': 5, 'saturday': 6
@@ -343,7 +340,7 @@
             case 'weekday':
                 return day >= 1 && day <= 5; // Monday to Friday
             case 'weekend':
-                return day === 0 || day === 6; // Saturday or Sunday
+                return day === 0 || day === 6; // Saturday/Sunday
             case 'monday':
                 return day === 1;
             case 'tuesday':
@@ -363,7 +360,7 @@
         }
     }
 
-    // Helper function to create a calendar event object
+    // Create a calendar event object
     function createCalendarEvent(event, specificDate = null) {
         try {
             let start, end;
@@ -384,7 +381,7 @@
                 return null;
             }
 
-            // Check if we're past the end date for recurring events
+            // Check if past the end date for recurring events
             if (event.endDate && specificDate) {
                 const endDate = new Date(event.endDate);
                 endDate.setHours(23, 59, 59, 999); // Include the entire end date
@@ -395,7 +392,7 @@
 
             // Handle class events differently
             if (event.isClass) {
-                // Parse time (assuming format like "18:00")
+                // Parse time (format like "18:00")
                 const [startHours, startMinutes] = event.startTime.split(':').map(Number);
                 const [endHours, endMinutes] = event.endTime.split(':').map(Number);
                 if (isNaN(startHours) || isNaN(endHours)) { 
@@ -423,7 +420,7 @@
                 end = new Date(nextDate);
                 end.setHours(endHours, endMinutes, 0, 0);
                 
-                // If end time is before start time (crossing midnight), add a day
+                // If end time is before start time (ard midnight), add a day
                 if (end < start) {
                     end.setDate(end.getDate() + 1);
                 }

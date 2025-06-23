@@ -67,7 +67,7 @@
             return course.schedule.flatMap(session => {
                 if (!session.day || !session.start || !session.end) return [];
                 
-                // Convert day string to day number (0=Sunday, 1=Monday, etc.)
+                // Convert day string to day number (0=Sunday, 1=Monday, etc)
                 const dayMap = {
                     'sunday': 0, 'monday': 1, 'tuesday': 2, 
                     'wednesday': 3, 'thursday': 4, 'friday': 5, 'saturday': 6
@@ -166,7 +166,7 @@
         const today = new Date();
         today.setHours(0, 0, 0, 0);
         
-        // Show events for 1 year (adjust as needed)
+        // Show events for 1 year 
         const endDate = new Date(today);
         endDate.setFullYear(today.getFullYear() + 1);
 
@@ -249,9 +249,8 @@
         }
     });
 
-    // Helper function to check if a date matches the recurrence pattern
+    // Check if a date matches the recurrence pattern
     function matchesRecurrencePattern(date, pattern) {
-        // Day mapping: Sunday is 0, Monday is 1, and so on...
         const dayMap = {
             'sunday': 0, 'monday': 1, 'tuesday': 2, 
             'wednesday': 3, 'thursday': 4, 'friday': 5, 'saturday': 6
@@ -321,7 +320,7 @@
 
             // Handle class events differently
             if (event.isClass) {
-                // Parse time (assuming format like "18:00")
+                // Parse time (format like "18:00")
                 const [startHours, startMinutes] = event.startTime.split(':').map(Number);
                 const [endHours, endMinutes] = event.endTime.split(':').map(Number);
                 if (isNaN(startHours) || isNaN(endHours)) { 

@@ -151,7 +151,7 @@
 
 <div class="h-screen flex flex-col justify-center items-center bg-gray-50 p-6">
 <!-- First Section: Logo and Welcome Message -->
-<img src="EduCalendar.png" alt="EduCalendar Logo" class="max-w-full h-auto pb-4" />
+<img src="favicon.png" alt="EduCalendar Logo" class="max-w-full h-auto" />
 <h2 class="text-xl font-semibold text-gray-700">Welcome to EduCalendar!</h2>
 
 <!-- Second Section: Login / Signup Form -->

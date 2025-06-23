@@ -58,8 +58,6 @@
     { label: 'Sunday', value: 'sunday' }
   ];
 
-	// const courses = ['Math', 'Science'];
-  // export let loadedCourses = [];
 	const types = ['Assignment', 'Test', 'Other'];
 
 	async function openModal() {
@@ -163,7 +161,7 @@
       courseTitle: selectedCourse,
       type: selectedType,
       description: description,
-      startDate: previewStartDate || new Date().toISOString().split('T')[0],
+      startDate: previewStartDate,
       endDate: previewEndDate,
       startTime: previewStartTime,
       endTime: previewEndTime,
@@ -188,10 +186,6 @@
       // console.error('Failed to save event:', e);
     }
   }
-	// function addEvent() {
-	// 	console.log('Add Event:', { description, selectedCourse, selectedType });
-	// 	closeModal();
-	// }
   
   let modalTab = 'event';
 
@@ -284,7 +278,7 @@
 <!-- Trigger Button -->
 <button
 	on:click={!isDisabled ? openModal : null}
-	class="bg-blue-600  text-white px-2 py-2 rounded-full shadow-white shadow-md hover:bg-blue-600 transition"
+	class="bg-blue-600  text-white px-4 py-4 rounded-full shadow-white shadow-md hover:bg-blue-600 transition"
   disabled={isDisabled}
 >
 	<PlusOutline/>
@@ -315,8 +309,6 @@
     role="presentation"
     >
 			<!-- Section 1: Title -->
-			<!-- <h2 class="text-xl font-bold mb-4">Add New Event</h2> -->
-
       <!-- Modal Tabs Header -->
       <div class="bg-white mb-4 border-b border-gray-200 flex justify-center space-x-4 text-sm font-medium">
         {#each modalTabs as tab}

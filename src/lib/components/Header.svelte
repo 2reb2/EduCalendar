@@ -74,8 +74,8 @@
 <div class="header text-sm font-medium p-5 pl-4 pr-4 text-gray-500 border-b border-gray-200 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300">
     <ul class="flex justify-between items-center">
         <li class="flex items-center">
-            <div class="relative w-8 h-auto mr-2">
-                <img src="EduCalendar.png" alt="EduCalendar Icon" class="object-contain w-full h-auto" />
+            <div class="relative w-7 h-auto mr-2">
+                <img src="favicon.png" alt="EduCalendar Icon" class="object-contain w-full " />
             </div>
             Hello, {userName || 'Guest'}
         </li>
@@ -90,8 +90,6 @@
     </ul>
 </div>
 
-
-<!-- Add this modal below your settings modal -->
 {#if showAbout}
 <div class="fixed inset-0 bg-[rgba(0,0,0,0.6)] flex items-center justify-center z-[9991]"
      on:click|self={() => showAbout = false}
@@ -124,11 +122,9 @@
 
         <div class="space-y-4">
             <div class="flex items-center mb-2">
-                <img src="EduCalendar.png" alt="Logo" class="w-auto h-6 mr-3"/>
+                <img src="favicon.png" alt="Logo" class="w-auto h-8 mr-3"/>
                 <h2 class="text-2xl font-bold dark:text-white">EduCalendar</h2>
             </div>
-            
-            <!-- <h3 class="text-lg font-semibold dark:text-white">Enhancing Daily Planning for Students with NLP-Driven Event Automation</h3> -->
             
             <div class="prose dark:prose-invert">
                 <p>
@@ -149,7 +145,7 @@
                 
                 <p class="mt-4">Built as a Final Year Project, EduCalendar utilizes:</p>
                 <ul class="list-disc pl-5 space-y-1">
-                    <li>spaCy NLP NER for automatic event creation</li>
+                    <li>NLP NER for automatic event creation</li>
                     <li>Sveltekit framework</li>
                     <li>Firebase</li>
                     <li>
@@ -173,7 +169,6 @@
                 <p>Ts. Dr Sarah Flora Anak Samson Juan</p>
                 <p>Computational Science, FCSIT, UNIMAS</p>
                 <p>sjsflora@unimas.my</p>
-                <!-- <p>[Optional: GitHub/LinkedIn]</p> -->
             </div>
         </div>
         
@@ -270,14 +265,6 @@
                 </div>
             {/if}
         </div>
-
-        <!-- Footer -->
-        <!-- <div class="border-t border-gray-200 p-4 text-center text-sm text-gray-500 dark:border-gray-700 dark:text-gray-400">
-            <div class="flex items-center justify-center">
-                <InfoCircleOutline class="w-4 h-4 mr-1" />
-                EduCalendar v1.0.0
-            </div>
-        </div> -->
     </div>
 </div>
 {/if}
